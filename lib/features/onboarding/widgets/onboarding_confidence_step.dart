@@ -5,7 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../../core/constants/app_colors.dart';
 import '../../../core/router/app_routes.dart';
-import '../../../core/widgets/app_animation.dart';
+import '../../../core/widgets/app_animations.dart';
 import '../../../core/widgets/app_button.dart';
 import '../models/onboarding_models.dart';
 import '../providers/onboarding_provider.dart';
@@ -26,25 +26,30 @@ class OnboardingConfidenceStep extends StatelessWidget {
       title: 'Beginner',
       subtitle: "I'm still learning the basics.",
       icon: Icons.face_3_outlined,
+      imageAsset: 'assets/images/ChatGPT Image Oct 10, 2026, 02_16_09 PM-2 1.png',
     ),
     MakeupConfidenceLevel(
       id: 'comfortable',
       title: 'Comfortable',
       subtitle: 'I know my routine and want to improve.',
       icon: Icons.face_4_outlined,
+      imageAsset:
+          'assets/images/ChatGPT Image Oct 10, 2026, 02_16_08 PM-1 1 copy.png',
     ),
     MakeupConfidenceLevel(
       id: 'advanced',
       title: 'Advanced',
       subtitle: 'I love experimenting with techniques.',
       icon: Icons.auto_fix_high_outlined,
+      imageAsset:
+          'assets/images/ChatGPT Image Oct 10, 2026, 02_16_12 PM-3 1.png',
     ),
   ];
 
   @override
   Widget build(BuildContext context) {
-    return AppAnimation(
-      isActive: provider.currentStep == 3,
+    return AppAnimations.fadeInUp(
+      key: ValueKey(provider.currentStep),
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 24.w),
         child: Column(
@@ -55,8 +60,8 @@ class OnboardingConfidenceStep extends StatelessWidget {
               textAlign: TextAlign.center,
               text: TextSpan(
                 style: GoogleFonts.playfairDisplay(
-                  fontSize: 32.sp,
-                  fontWeight: FontWeight.bold,
+                  fontSize: 34.sp,
+                  fontWeight: FontWeight.w400,
                   color: AppColors.textPrimaryLight,
                   height: 1.2,
                 ),
@@ -72,18 +77,29 @@ class OnboardingConfidenceStep extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(height: 32.h),
-            ..._levels.map(
-              (level) => Padding(
-                padding: EdgeInsets.only(bottom: 14.h),
-                child: _ConfidenceCard(
-                  level: level,
-                  selected: provider.selectedConfidence == level.id,
-                  onTap: () => provider.setConfidence(level.id),
-                ),
+            SizedBox(height: 20.h),
+            Expanded(
+              child: Column(
+                children: [
+                  for (var index = 0; index < _levels.length; index++)
+                    Expanded(
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                          bottom: index == _levels.length - 1 ? 0 : 12.h,
+                        ),
+                        child: _ConfidenceCard(
+                          level: _levels[index],
+                          selected:
+                              provider.selectedConfidence == _levels[index].id,
+                          onTap: () =>
+                              provider.setConfidence(_levels[index].id),
+                        ),
+                      ),
+                    ),
+                ],
               ),
             ),
-            const Spacer(),
+            SizedBox(height: 16.h),
             AppButton(
               text: 'Continue',
               showArrow: true,
@@ -111,89 +127,117 @@ class _ConfidenceCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 220),
-        padding: EdgeInsets.all(18.r),
-        decoration: BoxDecoration(
-          color: selected ? AppColors.cardSelectedBg : Colors.white,
-          borderRadius: BorderRadius.circular(18.r),
-          border: Border.all(
-            color: selected
-                ? AppColors.cardBorderSelected
-                : AppColors.cardBorder,
-            width: selected ? 1.5.w : 1.w,
+    return Semantics(
+      button: true,
+      selected: selected,
+      label: '${level.title}, ${level.subtitle}',
+      child: GestureDetector(
+        onTap: onTap,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 240),
+          curve: Curves.easeOutCubic,
+          padding: EdgeInsets.all(10.r),
+          decoration: BoxDecoration(
+            color: selected ? AppColors.cardSelectedBg : Colors.white,
+            borderRadius: BorderRadius.circular(18.r),
+            border: Border.all(
+              color: selected
+                  ? AppColors.cardBorderSelected
+                  : AppColors.cardBorder,
+              width: selected ? 1.5.w : 1.w,
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: AppColors.espresso.withValues(
+                  alpha: selected ? 0.08 : 0.035,
+                ),
+                blurRadius: selected ? 12.r : 7.r,
+                offset: Offset(0, 3.h),
+              ),
+            ],
           ),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.02),
-              blurRadius: 8.r,
-              offset: Offset(0, 4.h),
-            ),
-          ],
-        ),
-        child: Row(
-          children: [
-            Container(
-              width: 64.w,
-              height: 64.w,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: selected
-                    ? AppColors.accentRose.withValues(alpha: 0.12)
-                    : AppColors.backgroundLight,
-              ),
-              child: Icon(
-                level.icon,
-                size: 34.r,
-                color: selected
-                    ? AppColors.accentRose
-                    : AppColors.textSecondaryLight,
-              ),
-            ),
-            SizedBox(width: 16.w),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    level.title,
-                    style: GoogleFonts.playfairDisplay(
-                      fontSize: 20.sp,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.textPrimaryLight,
-                    ),
+          child: Row(
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(12.r),
+                child: SizedBox(
+                  width: 112.w,
+                  height: double.infinity,
+                  child: Stack(
+                    fit: StackFit.expand,
+                    children: [
+                      const ColoredBox(color: AppColors.cardSelectedBg),
+                      Image.asset(
+                        level.imageAsset,
+                        fit: BoxFit.cover,
+                        frameBuilder:
+                            (context, child, frame, wasSynchronouslyLoaded) {
+                              if (wasSynchronouslyLoaded) return child;
+                              return AnimatedOpacity(
+                                opacity: frame == null ? 0 : 1,
+                                duration: const Duration(milliseconds: 350),
+                                curve: Curves.easeOut,
+                                child: child,
+                              );
+                            },
+                        errorBuilder: (context, error, stackTrace) =>
+                            const ColoredBox(color: AppColors.cardSelectedBg),
+                      ),
+                    ],
                   ),
-                  SizedBox(height: 4.h),
-                  Text(
-                    level.subtitle,
-                    style: GoogleFonts.poppins(
-                      fontSize: 12.5.sp,
-                      color: AppColors.textSecondaryLight,
-                      height: 1.35,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(width: 8.w),
-            Container(
-              width: 22.w,
-              height: 22.w,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: selected ? AppColors.accentRose : Colors.transparent,
-                border: Border.all(
-                  color: selected ? AppColors.accentRose : AppColors.cardBorder,
-                  width: 1.5.w,
                 ),
               ),
-              child: selected
-                  ? Icon(Icons.check, size: 14.r, color: Colors.white)
-                  : null,
-            ),
-          ],
+              SizedBox(width: 14.w),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      level.title,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: GoogleFonts.playfairDisplay(
+                        fontSize: 20.sp,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.textPrimaryLight,
+                      ),
+                    ),
+                    SizedBox(height: 5.h),
+                    Text(
+                      level.subtitle,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: GoogleFonts.poppins(
+                        fontSize: 12.5.sp,
+                        color: AppColors.textSecondaryLight,
+                        height: 1.35,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(width: 8.w),
+              AnimatedContainer(
+                duration: const Duration(milliseconds: 200),
+                width: 24.w,
+                height: 24.w,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: selected ? AppColors.accentRose : Colors.transparent,
+                  border: Border.all(
+                    color: selected
+                        ? AppColors.accentRose
+                        : AppColors.cardBorder,
+                    width: 1.5.w,
+                  ),
+                ),
+                child: selected
+                    ? Icon(Icons.check, size: 15.r, color: Colors.white)
+                    : null,
+              ),
+            ],
+          ),
         ),
       ),
     );

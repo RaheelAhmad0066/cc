@@ -19,12 +19,13 @@ class MakeupConfidenceLevel {
   final String title;
   final String subtitle;
   final IconData icon;
+  final String imageAsset;
 
   const MakeupConfidenceLevel({
     required this.id,
     required this.title,
     required this.subtitle,
     required this.icon,
+    required this.imageAsset,
   });
 }
-

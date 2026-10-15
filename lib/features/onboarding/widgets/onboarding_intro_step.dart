@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../core/constants/app_colors.dart';
-import '../../../core/widgets/app_animation.dart';
+import '../../../core/widgets/app_animations.dart';
 import '../../../core/widgets/app_button.dart';
 import '../providers/onboarding_provider.dart';
 import 'onboarding_asset_background.dart';
@@ -20,8 +20,8 @@ class OnboardingIntroStep extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppAnimation(
-      isActive: provider.currentStep == 1,
+    return AppAnimations.fadeInUp(
+      key: ValueKey(provider.currentStep),
       child: Stack(
         fit: StackFit.expand,
         children: [

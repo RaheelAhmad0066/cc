@@ -5,7 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../../core/constants/app_colors.dart';
 import '../../../core/router/app_routes.dart';
-import '../../../core/widgets/app_animation.dart';
+import '../../../core/widgets/app_animations.dart';
 import '../../../core/widgets/app_button.dart';
 import '../providers/onboarding_provider.dart';
 
@@ -21,8 +21,8 @@ class OnboardingWelcomeStep extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppAnimation(
-      isActive: true,
+    return AppAnimations.fadeInUp(
+      key: ValueKey(provider.currentStep),
       child: Stack(
         children: [
           Positioned(

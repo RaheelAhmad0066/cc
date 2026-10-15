@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 
 import '../../../core/constants/app_colors.dart';
-import '../../../core/widgets/app_animation.dart';
+import '../../../core/widgets/app_animations.dart';
 import '../../../core/widgets/app_button.dart';
 import '../models/onboarding_models.dart';
 import '../providers/onboarding_provider.dart';
@@ -22,46 +23,50 @@ class OnboardingInterestsStep extends StatelessWidget {
     HelpInterest(
       id: 'suits_me',
       title: 'Find makeup that suits me',
-      icon: Icons.face_retouching_natural_rounded,
+      icon: Iconsax.user_square,
       imageAsset: 'assets/images/01_try_museai_look 1.png',
     ),
     HelpInterest(
       id: 'apply',
       title: 'Learn how to apply makeup',
-      icon: Icons.brush_outlined,
-      imageAsset: 'assets/01_try_museai_look 1.png',
+      icon: Iconsax.brush,
+      imageAsset:
+          'assets/images/ChatGPT Image Oct 10, 2026, 02_15_03 PM-2 1 copy.png',
     ),
     HelpInterest(
       id: 'try_new',
       title: 'Try new looks',
-      icon: Icons.auto_awesome_outlined,
-      imageAsset: 'assets/images/warm_soft_glam 1.png',
+      icon: Iconsax.magicpen,
+      imageAsset:
+          'assets/images/ChatGPT Image Oct 10, 2026, 02_16_26 PM-2 1.png',
     ),
     HelpInterest(
       id: 'shades',
       title: 'Find better shades',
-      icon: Icons.colorize_outlined,
-      imageAsset: 'assets/images/Freckled Beauty Scan Portrait 1.png',
+      icon: Iconsax.colorfilter,
+      imageAsset:
+          'assets/images/ChatGPT Image Oct 10, 2026, 02_15_09 PM-4 1.png',
     ),
     HelpInterest(
       id: 'own_products',
       title: 'Use products I already own',
-      icon: Icons.shopping_bag_outlined,
+      icon: Iconsax.bag_2,
       imageAsset:
-          'assets/images/Luxury Makeup Still Life with Rose-Gold Accents 1.png',
+          'assets/images/ChatGPT Image Oct 10, 2026, 02_15_12 PM-5 1 copy.png',
     ),
     HelpInterest(
       id: 'recreate',
       title: 'Recreate looks I see online',
-      icon: Icons.image_outlined,
-      imageAsset: 'assets/images/Warm Windowlight Beauty Portrait 1.png',
+      icon: Iconsax.gallery,
+      imageAsset:
+          'assets/images/ChatGPT Image Oct 10, 2026, 02_15_15 PM-6 1.png',
     ),
   ];
 
   @override
   Widget build(BuildContext context) {
-    return AppAnimation(
-      isActive: provider.currentStep == 2,
+    return AppAnimations.fadeInUp(
+      key: ValueKey(provider.currentStep),
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20.w),
         child: Column(
@@ -105,7 +110,7 @@ class OnboardingInterestsStep extends StatelessWidget {
                   crossAxisCount: 2,
                   crossAxisSpacing: 12.w,
                   mainAxisSpacing: 12.h,
-                  childAspectRatio: 1.02,
+                  childAspectRatio: 1.17,
                 ),
                 itemBuilder: (context, index) {
                   final interest = _interests[index];
@@ -148,7 +153,8 @@ class _InterestCard extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: AnimatedContainer(
-        duration: const Duration(milliseconds: 220),
+        duration: const Duration(milliseconds: 260),
+        curve: Curves.easeOutCubic,
         decoration: BoxDecoration(
           color: selected ? AppColors.cardSelectedBg : Colors.white,
           borderRadius: BorderRadius.circular(16.r),
@@ -158,6 +164,15 @@ class _InterestCard extends StatelessWidget {
                 : AppColors.cardBorder,
             width: selected ? 1.5.w : 1.w,
           ),
+          boxShadow: [
+            BoxShadow(
+              color: AppColors.espresso.withValues(
+                alpha: selected ? 0.09 : 0.035,
+              ),
+              blurRadius: selected ? 14.r : 8.r,
+              offset: Offset(0, 4.h),
+            ),
+          ],
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -165,14 +180,28 @@ class _InterestCard extends StatelessWidget {
             Expanded(
               child: ClipRRect(
                 borderRadius: BorderRadius.vertical(top: Radius.circular(14.r)),
-                child: Image.asset(
-                  interest.imageAsset ??
-                      'assets/images/Freckled Beauty Scan Portrait 1.png',
-                  fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) => ColoredBox(
-                    color: AppColors.cardSelectedBg,
-                    child: Icon(interest.icon, color: AppColors.accentRose),
-                  ),
+                child: Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    const ColoredBox(color: AppColors.cardSelectedBg),
+                    Image.asset(
+                      interest.imageAsset ??
+                          'assets/images/Freckled Beauty Scan Portrait 1.png',
+                      fit: BoxFit.cover,
+                      frameBuilder:
+                          (context, child, frame, wasSynchronouslyLoaded) {
+                            if (wasSynchronouslyLoaded) return child;
+                            return AnimatedOpacity(
+                              opacity: frame == null ? 0 : 1,
+                              duration: const Duration(milliseconds: 300),
+                              curve: Curves.easeOut,
+                              child: child,
+                            );
+                          },
+                      errorBuilder: (context, error, stackTrace) =>
+                          const ColoredBox(color: AppColors.cardSelectedBg),
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -216,7 +245,11 @@ class _InterestCard extends StatelessWidget {
                       ),
                     ),
                     child: selected
-                        ? Icon(Icons.check, size: 14.r, color: Colors.white)
+                        ? Icon(
+                            Iconsax.tick_circle,
+                            size: 14.r,
+                            color: Colors.white,
+                          )
                         : null,
                   ),
                 ],

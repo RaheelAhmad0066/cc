@@ -3,7 +3,6 @@ import 'package:go_router/go_router.dart';
 
 import '../../features/home/views/home_screen.dart';
 import '../../features/onboarding/views/onboarding_screen.dart';
-import '../../features/splash/views/splash_screen.dart';
 import 'app_routes.dart';
 
 class AppRouter {
@@ -14,14 +13,9 @@ class AppRouter {
 
   static final GoRouter router = GoRouter(
     navigatorKey: rootNavigatorKey,
-    initialLocation: AppRoutes.splash,
+    initialLocation: AppRoutes.onboarding,
     debugLogDiagnostics: false,
     routes: [
-      GoRoute(
-        path: AppRoutes.splash,
-        name: AppRoutes.splashName,
-        builder: (context, state) => const SplashScreen(),
-      ),
       GoRoute(
         path: AppRoutes.onboarding,
         name: AppRoutes.onboardingName,
