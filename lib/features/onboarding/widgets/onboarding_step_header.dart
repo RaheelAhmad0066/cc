@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import '../../../core/constants/app_colors.dart';
 
 class OnboardingStepHeader extends StatelessWidget {
-  final int currentStep; // 1-based: 1, 2, 3
-  final int totalSteps;  // 5
+  final int currentStep;
+  final int totalSteps;
   final VoidCallback onBack;
 
   const OnboardingStepHeader({
@@ -16,52 +18,54 @@ class OnboardingStepHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 12.0),
+      padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 12.h),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          // Circular Back Button
-          GestureDetector(
-            onTap: onBack,
-            child: Container(
-              width: 38,
-              height: 38,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.white,
-                border: Border.all(color: AppColors.cardBorder, width: 1),
-              ),
-              child: const Icon(
-                Icons.chevron_left_rounded,
-                size: 22,
-                color: AppColors.textPrimaryLight,
+          Material(
+            color: AppColors.cardSelectedBg,
+            shape: CircleBorder(
+              side: BorderSide(color: AppColors.cardBorder, width: 1.w),
+            ),
+            child: InkWell(
+              onTap: onBack,
+              customBorder: const CircleBorder(),
+              child: SizedBox(
+                width: 40.w,
+                height: 40.w,
+                child: Icon(
+                  Icons.chevron_left_rounded,
+                  size: 24.r,
+                  color: AppColors.textPrimaryLight,
+                ),
               ),
             ),
           ),
 
-          // Center: Step text & Segmented Progress Bar
           Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
                 '$currentStep of $totalSteps',
-                style: const TextStyle(
-                  fontSize: 12,
+                style: TextStyle(
+                  fontSize: 12.sp,
                   fontWeight: FontWeight.w500,
                   color: AppColors.textSecondaryLight,
                 ),
               ),
-              const SizedBox(height: 8),
+              SizedBox(height: 8.h),
               Row(
                 mainAxisSize: MainAxisSize.min,
                 children: List.generate(totalSteps, (index) {
                   final isActive = index < currentStep;
-                  return Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 3),
-                    width: 24,
-                    height: 3.5,
+                  return AnimatedContainer(
+                    duration: const Duration(milliseconds: 350),
+                    curve: Curves.easeInOut,
+                    margin: EdgeInsets.symmetric(horizontal: 3.w),
+                    width: 24.w,
+                    height: 3.5.h,
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(4),
+                      borderRadius: BorderRadius.circular(4.r),
                       color: isActive
                           ? AppColors.progressActive
                           : AppColors.progressInactive,
@@ -72,11 +76,9 @@ class OnboardingStepHeader extends StatelessWidget {
             ],
           ),
 
-          // Placeholder to balance row
-          const SizedBox(width: 38),
+          SizedBox(width: 40.w),
         ],
       ),
     );
   }
 }
-
