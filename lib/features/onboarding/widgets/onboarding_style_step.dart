@@ -20,32 +20,32 @@ class OnboardingStyleStep extends StatelessWidget {
     (
       id: 'natural',
       title: 'Natural',
-      image: 'assets/images/Freckled Beauty Scan Portrait 1.png',
+      image: 'assets/images/ChatGPT Image Oct 10, 2026, 02_16_24 PM-1 1 copy.png',
     ),
     (
       id: 'soft_glam',
       title: 'Soft Glam',
-      image: 'assets/images/ChatGPT Image Oct 10, 2026, 02_15_03 PM-2 1.png',
+      image: 'assets/images/ChatGPT Image Oct 10, 2026, 02_16_26 PM-2 1 copy.png',
     ),
     (
       id: 'clean',
       title: 'Clean',
-      image: 'assets/images/Warm Windowlight Beauty Portrait 1.png',
+      image: 'assets/images/ChatGPT Image Oct 10, 2026, 02_16_29 PM-3 1.png',
     ),
     (
       id: 'romantic',
       title: 'Romantic',
-      image: 'assets/images/rosy_date_night 1.png',
+      image: 'assets/images/ChatGPT Image Oct 10, 2026, 02_16_32 PM-4 1 copy.png',
     ),
     (
       id: 'bold',
       title: 'Bold',
-      image: 'assets/images/ChatGPT Image Oct 10, 2026, 02_15_15 PM-6 1.png',
+      image: 'assets/images/ChatGPT Image Oct 10, 2026, 02_16_34 PM-5 1 copy.png',
     ),
     (
       id: 'full_glam',
       title: 'Full Glam',
-      image: 'assets/images/Glossy Rose Beauty Editorial 1.png',
+      image: 'assets/images/ChatGPT Image Oct 10, 2026, 02_16_39 PM-6 1 copy.png',
     ),
   ];
 
