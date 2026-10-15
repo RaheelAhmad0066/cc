@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../core/constants/app_colors.dart';
-import '../../../core/router/app_routes.dart';
 import '../../../core/widgets/app_animations.dart';
 import '../../../core/widgets/app_button.dart';
 import '../models/onboarding_models.dart';
@@ -115,7 +113,7 @@ class OnboardingConfidenceStep extends StatelessWidget {
                 text: 'Continue',
                 showArrow: true,
                 height: 54.h,
-                onPressed: () => context.go(AppRoutes.home),
+                onPressed: () => provider.nextStep(pageController),
               ),
             ),
             SizedBox(height: 16.h),

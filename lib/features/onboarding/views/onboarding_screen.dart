@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../core/constants/app_colors.dart';
+import '../../../core/router/app_routes.dart';
 import '../providers/onboarding_provider.dart';
 import '../widgets/onboarding_confidence_step.dart';
 import '../widgets/onboarding_interests_step.dart';
+import '../widgets/onboarding_inspiration_step.dart';
 import '../widgets/onboarding_intro_step.dart';
+import '../widgets/onboarding_style_step.dart';
 import '../widgets/onboarding_step_header.dart';
 import '../widgets/onboarding_welcome_step.dart';
 
@@ -17,7 +21,7 @@ class OnboardingScreen extends StatefulWidget {
 }
 
 class _OnboardingScreenState extends State<OnboardingScreen> {
-  static const _pageCount = 4;
+  static const _pageCount = 6;
   late final PageController _pageController;
 
   @override
@@ -74,6 +78,14 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           3 => OnboardingConfidenceStep(
                             provider: provider,
                             pageController: _pageController,
+                          ),
+                          4 => OnboardingStyleStep(
+                            provider: provider,
+                            pageController: _pageController,
+                          ),
+                          5 => OnboardingInspirationStep(
+                            provider: provider,
+                            onComplete: () => context.go(AppRoutes.home),
                           ),
                           _ => throw RangeError.index(index, _pageCount),
                         };
