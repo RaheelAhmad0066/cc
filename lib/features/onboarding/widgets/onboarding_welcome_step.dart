@@ -21,58 +21,59 @@ class OnboardingWelcomeStep extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppAnimations.fadeInUp(
-      key: ValueKey(provider.currentStep),
-      child: Stack(
-        children: [
-          Positioned(
-            top: 0,
-            left: 0,
-            right: 0,
-            height: 0.66.sh,
-            child: Stack(
-              fit: StackFit.expand,
-              children: [
-                Image.asset(
-                  'assets/images/Warm Windowlight Beauty Portrait 1.png',
-                  fit: BoxFit.cover,
-                  alignment: Alignment.topCenter,
-                  errorBuilder: (context, error, stackTrace) => Container(
-                    color: const Color(0xFFF0E5DF),
-                    alignment: Alignment.center,
-                    child: Icon(
-                      Icons.person,
-                      size: 80.r,
-                      color: AppColors.accentRose,
-                    ),
+    return Stack(
+      children: [
+        Positioned(
+          top: 0,
+          left: 0,
+          right: 0,
+          height: 0.66.sh,
+          child: Stack(
+            fit: StackFit.expand,
+            children: [
+              Image.asset(
+                'assets/images/Warm Windowlight Beauty Portrait 1.png',
+                fit: BoxFit.cover,
+                alignment: Alignment.topCenter,
+                errorBuilder: (context, error, stackTrace) => Container(
+                  color: const Color(0xFFF0E5DF),
+                  alignment: Alignment.center,
+                  child: Icon(
+                    Icons.person,
+                    size: 80.r,
+                    color: AppColors.accentRose,
                   ),
                 ),
-                DecoratedBox(
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      stops: const [0, 0.45, 0.85, 1],
-                      colors: [
-                        Colors.transparent,
-                        Colors.transparent,
-                        AppColors.backgroundLight.withValues(alpha: 0.8),
-                        AppColors.backgroundLight,
-                      ],
-                    ),
+              ),
+              DecoratedBox(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    stops: const [0, 0.45, 0.85, 1],
+                    colors: [
+                      Colors.transparent,
+                      Colors.transparent,
+                      AppColors.backgroundLight.withValues(alpha: 0.8),
+                      AppColors.backgroundLight,
+                    ],
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-          Positioned(
-            left: 24.w,
-            right: 24.w,
-            bottom: 50.h,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                RichText(
+        ),
+        Positioned(
+          left: 24.w,
+          right: 24.w,
+          bottom: 50.h,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              AppAnimations.fadeInUp(
+               
+                key: ValueKey('welcome-heading-${provider.currentStep}'),
+                child: RichText(
                   textAlign: TextAlign.center,
                   text: TextSpan(
                     style: GoogleFonts.playfairDisplay(
@@ -93,22 +94,35 @@ class OnboardingWelcomeStep extends StatelessWidget {
                     ],
                   ),
                 ),
-                SizedBox(height: 14.h),
-                Text(
+              ),
+
+              SizedBox(height: 14.h),
+              AppAnimations.fadeInUp(
+                key: ValueKey('welcome-description-${provider.currentStep}'),
+                delay: const Duration(milliseconds: 100),
+                child: Text(
                   'Discover looks designed around your features, preview them on yourself, and learn exactly how to recreate them.',
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.bodyLarge
                       ?.copyWith(fontSize: 14.sp, height: 1.5),
                 ),
-                SizedBox(height: 28.h),
-                AppButton(
+              ),
+              SizedBox(height: 28.h),
+              AppAnimations.fadeInUp(
+                key: ValueKey('welcome-button-${provider.currentStep}'),
+                delay: const Duration(milliseconds: 200),
+                child: AppButton(
                   text: 'Get started',
                   showArrow: true,
                   height: 54.h,
                   onPressed: () => provider.nextStep(pageController),
                 ),
-                SizedBox(height: 14.h),
-                TextButton(
+              ),
+              SizedBox(height: 14.h),
+              AppAnimations.fadeInUp(
+                key: ValueKey('welcome-signin-${provider.currentStep}'),
+                delay: const Duration(milliseconds: 280),
+                child: TextButton(
                   onPressed: () => context.go(AppRoutes.home),
                   child: Text(
                     'I already have an account',
@@ -119,8 +133,12 @@ class OnboardingWelcomeStep extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(height: 10.h),
-                Row(
+              ),
+              SizedBox(height: 10.h),
+              AppAnimations.fadeInUp(
+                key: ValueKey('welcome-privacy-${provider.currentStep}'),
+                delay: const Duration(milliseconds: 360),
+                child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(
@@ -138,11 +156,11 @@ class OnboardingWelcomeStep extends StatelessWidget {
                     ),
                   ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

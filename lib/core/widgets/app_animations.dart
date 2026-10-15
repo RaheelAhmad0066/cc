@@ -30,7 +30,7 @@ class AppAnimations extends StatelessWidget {
     required Widget child,
     Duration delay = Duration.zero,
     Duration duration = const Duration(milliseconds: 600),
-    double slideDistance = 30,
+    double slideDistance = 60,
   }) {
     return AppAnimations(
       key: key,

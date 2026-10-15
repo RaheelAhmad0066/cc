@@ -48,33 +48,34 @@ class OnboardingConfidenceStep extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppAnimations.fadeInUp(
-      key: ValueKey(provider.currentStep),
-      child: Padding(
+    return Padding(
         padding: EdgeInsets.symmetric(horizontal: 24.w),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             SizedBox(height: 16.h),
-            RichText(
-              textAlign: TextAlign.center,
-              text: TextSpan(
-                style: GoogleFonts.playfairDisplay(
-                  fontSize: 34.sp,
-                  fontWeight: FontWeight.w400,
-                  color: AppColors.textPrimaryLight,
-                  height: 1.2,
-                ),
-                children: [
-                  const TextSpan(text: 'How confident\nare you with\n'),
-                  TextSpan(
-                    text: 'makeup?',
-                    style: GoogleFonts.playfairDisplay(
-                      color: AppColors.accentRose,
-                      fontStyle: FontStyle.italic,
-                    ),
+            AppAnimations.fadeInUp(
+              key: ValueKey('confidence-heading-${provider.currentStep}'),
+              child: RichText(
+                textAlign: TextAlign.center,
+                text: TextSpan(
+                  style: GoogleFonts.playfairDisplay(
+                    fontSize: 34.sp,
+                    fontWeight: FontWeight.w400,
+                    color: AppColors.textPrimaryLight,
+                    height: 1.2,
                   ),
-                ],
+                  children: [
+                    const TextSpan(text: 'How confident\nare you with\n'),
+                    TextSpan(
+                      text: 'makeup?',
+                      style: GoogleFonts.playfairDisplay(
+                        color: AppColors.accentRose,
+                        fontStyle: FontStyle.italic,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
             SizedBox(height: 20.h),
@@ -87,12 +88,19 @@ class OnboardingConfidenceStep extends StatelessWidget {
                         padding: EdgeInsets.only(
                           bottom: index == _levels.length - 1 ? 0 : 12.h,
                         ),
-                        child: _ConfidenceCard(
-                          level: _levels[index],
-                          selected:
-                              provider.selectedConfidence == _levels[index].id,
-                          onTap: () =>
-                              provider.setConfidence(_levels[index].id),
+                        child: AppAnimations.fadeInUp(
+                          key: ValueKey(
+                            'confidence-${provider.currentStep}-${_levels[index].id}',
+                          ),
+                          delay: Duration(milliseconds: 120 + (index * 100)),
+                          child: _ConfidenceCard(
+                            level: _levels[index],
+                            selected:
+                                provider.selectedConfidence ==
+                                _levels[index].id,
+                            onTap: () =>
+                                provider.setConfidence(_levels[index].id),
+                          ),
                         ),
                       ),
                     ),
@@ -100,16 +108,19 @@ class OnboardingConfidenceStep extends StatelessWidget {
               ),
             ),
             SizedBox(height: 16.h),
-            AppButton(
-              text: 'Continue',
-              showArrow: true,
-              height: 54.h,
-              onPressed: () => context.go(AppRoutes.home),
+            AppAnimations.fadeInUp(
+              key: ValueKey('confidence-button-${provider.currentStep}'),
+              delay: const Duration(milliseconds: 420),
+              child: AppButton(
+                text: 'Continue',
+                showArrow: true,
+                height: 54.h,
+                onPressed: () => context.go(AppRoutes.home),
+              ),
             ),
             SizedBox(height: 16.h),
           ],
         ),
-      ),
     );
   }
 }
@@ -166,7 +177,7 @@ class _ConfidenceCard extends StatelessWidget {
                   child: Stack(
                     fit: StackFit.expand,
                     children: [
-                      const ColoredBox(color: AppColors.cardSelectedBg),
+
                       Image.asset(
                         level.imageAsset,
                         fit: BoxFit.cover,

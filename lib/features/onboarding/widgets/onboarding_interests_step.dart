@@ -65,40 +65,45 @@ class OnboardingInterestsStep extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppAnimations.fadeInUp(
-      key: ValueKey(provider.currentStep),
-      child: Padding(
+    return Padding(
         padding: EdgeInsets.symmetric(horizontal: 20.w),
         child: Column(
           children: [
             SizedBox(height: 10.h),
-            RichText(
-              textAlign: TextAlign.center,
-              text: TextSpan(
-                style: GoogleFonts.playfairDisplay(
-                  fontSize: 34.sp,
-                  fontWeight: FontWeight.w400,
-                  color: AppColors.textPrimaryLight,
-                  height: 1.2,
-                ),
-                children: [
-                  const TextSpan(text: 'What would you\nlove '),
-                  TextSpan(
-                    text: 'help with?',
-                    style: GoogleFonts.playfairDisplay(
-                      color: AppColors.accentRose,
-                      fontStyle: FontStyle.italic,
-                    ),
+            AppAnimations.fadeInUp(
+              key: ValueKey('interests-heading-${provider.currentStep}'),
+              child: RichText(
+                textAlign: TextAlign.center,
+                text: TextSpan(
+                  style: GoogleFonts.playfairDisplay(
+                    fontSize: 34.sp,
+                    fontWeight: FontWeight.w400,
+                    color: AppColors.textPrimaryLight,
+                    height: 1.2,
                   ),
-                ],
+                  children: [
+                    const TextSpan(text: 'What would you\nlove '),
+                    TextSpan(
+                      text: 'help with?',
+                      style: GoogleFonts.playfairDisplay(
+                        color: AppColors.accentRose,
+                        fontStyle: FontStyle.italic,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
             SizedBox(height: 8.h),
-            Text(
-              'Choose as many as you like.',
-              style: GoogleFonts.poppins(
-                fontSize: 13.sp,
-                color: AppColors.textSecondaryLight,
+            AppAnimations.fadeInUp(
+              key: ValueKey('interests-description-${provider.currentStep}'),
+              delay: const Duration(milliseconds: 100),
+              child: Text(
+                'Choose as many as you like.',
+                style: GoogleFonts.poppins(
+                  fontSize: 13.sp,
+                  color: AppColors.textSecondaryLight,
+                ),
               ),
             ),
             SizedBox(height: 16.h),
@@ -114,25 +119,37 @@ class OnboardingInterestsStep extends StatelessWidget {
                 ),
                 itemBuilder: (context, index) {
                   final interest = _interests[index];
-                  return _InterestCard(
-                    interest: interest,
-                    selected: provider.selectedInterests.contains(interest.id),
-                    onTap: () => provider.toggleInterest(interest.id),
+                  return AppAnimations.fadeInUp(
+                    key: ValueKey(
+                      'interest-${provider.currentStep}-${interest.id}',
+                    ),
+                    delay: Duration(milliseconds: 140 + (index * 70)),
+                    duration: const Duration(milliseconds: 480),
+                    child: _InterestCard(
+                      interest: interest,
+                      selected: provider.selectedInterests.contains(
+                        interest.id,
+                      ),
+                      onTap: () => provider.toggleInterest(interest.id),
+                    ),
                   );
                 },
               ),
             ),
             SizedBox(height: 12.h),
-            AppButton(
-              text: 'Continue',
-              showArrow: true,
-              height: 54.h,
-              onPressed: () => provider.nextStep(pageController),
+            AppAnimations.fadeInUp(
+              key: ValueKey('interests-button-${provider.currentStep}'),
+              delay: const Duration(milliseconds: 500),
+              child: AppButton(
+                text: 'Continue',
+                showArrow: true,
+                height: 54.h,
+                onPressed: () => provider.nextStep(pageController),
+              ),
             ),
             SizedBox(height: 16.h),
           ],
         ),
-      ),
     );
   }
 }
