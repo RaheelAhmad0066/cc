@@ -9,6 +9,8 @@ import '../widgets/onboarding_confidence_step.dart';
 import '../widgets/onboarding_interests_step.dart';
 import '../widgets/onboarding_inspiration_step.dart';
 import '../widgets/onboarding_intro_step.dart';
+import '../widgets/onboarding_photo_guide_step.dart';
+import '../widgets/onboarding_product_preferences_step.dart';
 import '../widgets/onboarding_style_step.dart';
 import '../widgets/onboarding_step_header.dart';
 import '../widgets/onboarding_welcome_step.dart';
@@ -21,7 +23,7 @@ class OnboardingScreen extends StatefulWidget {
 }
 
 class _OnboardingScreenState extends State<OnboardingScreen> {
-  static const _pageCount = 6;
+  static const _pageCount = 8;
   late final PageController _pageController;
 
   @override
@@ -52,7 +54,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   if (provider.currentStep > 0)
                     OnboardingStepHeader(
                       currentStep: provider.currentStep,
-                      totalSteps: 5,
+                  totalSteps: 7,
                       onBack: () =>
                           provider.previousStep(_pageController),
                     ),
@@ -85,6 +87,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           ),
                           5 => OnboardingInspirationStep(
                             provider: provider,
+                            pageController: _pageController,
+                          ),
+                          6 => OnboardingProductPreferencesStep(
+                            provider: provider,
+                            pageController: _pageController,
+                          ),
+                          7 => OnboardingPhotoGuideStep(
                             onComplete: () => context.go(AppRoutes.home),
                           ),
                           _ => throw RangeError.index(index, _pageCount),

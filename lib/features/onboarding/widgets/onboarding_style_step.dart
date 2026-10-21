@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../core/constants/app_colors.dart';
+import '../../../core/widgets/app_animations.dart';
 import '../../../core/widgets/app_button.dart';
 import '../providers/onboarding_provider.dart';
 
@@ -55,7 +56,12 @@ class OnboardingStyleStep extends StatelessWidget {
       padding: EdgeInsets.fromLTRB(20.w, 8.h, 20.w, 12.h),
       child: Column(
         children: [
-          _heading(),
+          AppAnimations.fadeInUp(
+            key: ValueKey('style-heading-${provider.currentStep}'),
+            slideDistance: 24,
+            duration: const Duration(milliseconds: 440),
+            child: _heading(),
+          ),
           SizedBox(height: 14.h),
           Expanded(
             child: GridView.builder(
@@ -71,21 +77,35 @@ class OnboardingStyleStep extends StatelessWidget {
               itemBuilder: (context, index) {
                 final style = _styles[index];
                 final selected = provider.selectedStyles.contains(style.id);
-                return _StyleCard(
-                  title: style.title,
-                  imageAsset: style.image,
-                  selected: selected,
-                  onTap: () => provider.toggleStyle(style.id),
+                return AppAnimations.fadeInUp(
+                  key: ValueKey(
+                    'style-${provider.currentStep}-${style.id}',
+                  ),
+                  delay: Duration(milliseconds: 70 + index * 65),
+                  duration: const Duration(milliseconds: 440),
+                  slideDistance: 20,
+                  child: _StyleCard(
+                    title: style.title,
+                    imageAsset: style.image,
+                    selected: selected,
+                    onTap: () => provider.toggleStyle(style.id),
+                  ),
                 );
               },
             ),
           ),
           SizedBox(height: 10.h),
-          AppButton(
-            text: 'Continue',
-            showArrow: true,
-            height: 52.h,
-            onPressed: () => provider.nextStep(pageController),
+          AppAnimations.fadeInUp(
+            key: ValueKey('style-button-${provider.currentStep}'),
+            delay: const Duration(milliseconds: 420),
+            duration: const Duration(milliseconds: 440),
+            slideDistance: 16,
+            child: AppButton(
+              text: 'Continue',
+              showArrow: true,
+              height: 52.h,
+              onPressed: () => provider.nextStep(pageController),
+            ),
           ),
         ],
       ),

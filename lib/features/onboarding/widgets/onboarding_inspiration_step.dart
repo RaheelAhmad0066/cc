@@ -3,17 +3,18 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../core/constants/app_colors.dart';
+import '../../../core/widgets/app_animations.dart';
 import '../../../core/widgets/app_button.dart';
 import '../providers/onboarding_provider.dart';
 
 class OnboardingInspirationStep extends StatelessWidget {
   final OnboardingProvider provider;
-  final VoidCallback onComplete;
+  final PageController pageController;
 
   const OnboardingInspirationStep({
     super.key,
     required this.provider,
-    required this.onComplete,
+    required this.pageController,
   });
 
   static const _occasions = [
@@ -37,9 +38,18 @@ class OnboardingInspirationStep extends StatelessWidget {
       fit: StackFit.expand,
       children: [
         Image.asset(
-          'assets/images/Luxury Makeup Still Life with Rose-Gold Accents 1.png',
+          'assets/images/makeup_inspiration_bg.png',
           fit: BoxFit.cover,
           alignment: Alignment.bottomCenter,
+          frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
+            if (wasSynchronouslyLoaded) return child;
+            return AnimatedOpacity(
+              opacity: frame == null ? 0 : 1,
+              duration: const Duration(milliseconds: 500),
+              curve: Curves.easeOut,
+              child: child,
+            );
+          },
         ),
         DecoratedBox(
           decoration: BoxDecoration(
@@ -60,7 +70,12 @@ class OnboardingInspirationStep extends StatelessWidget {
           padding: EdgeInsets.fromLTRB(16.w, 8.h, 16.w, 12.h),
           child: Column(
             children: [
-              _heading(),
+              AppAnimations.fadeInUp(
+                key: ValueKey('inspiration-heading-${provider.currentStep}'),
+                slideDistance: 24,
+                duration: const Duration(milliseconds: 440),
+                child: _heading(),
+              ),
               SizedBox(height: 14.h),
               Expanded(
                 child: GridView.builder(
@@ -78,20 +93,34 @@ class OnboardingInspirationStep extends StatelessWidget {
                     final selected = provider.selectedOccasions.contains(
                       occasion.id,
                     );
-                    return _OccasionTile(
-                      title: occasion.title,
-                      icon: occasion.icon,
-                      selected: selected,
-                      onTap: () => provider.toggleOccasion(occasion.id),
+                    return AppAnimations.fadeInUp(
+                      key: ValueKey(
+                        'occasion-${provider.currentStep}-${occasion.id}',
+                      ),
+                      delay: Duration(milliseconds: 70 + index * 55),
+                      duration: const Duration(milliseconds: 420),
+                      slideDistance: 18,
+                      child: _OccasionTile(
+                        title: occasion.title,
+                        icon: occasion.icon,
+                        selected: selected,
+                        onTap: () => provider.toggleOccasion(occasion.id),
+                      ),
                     );
                   },
                 ),
               ),
-              AppButton(
-                text: 'Continue',
-                showArrow: true,
-                height: 52.h,
-                onPressed: onComplete,
+              AppAnimations.fadeInUp(
+                key: ValueKey('inspiration-button-${provider.currentStep}'),
+                delay: const Duration(milliseconds: 390),
+                duration: const Duration(milliseconds: 440),
+                slideDistance: 16,
+                child: AppButton(
+                  text: 'Continue',
+                  showArrow: true,
+                  height: 52.h,
+                  onPressed: () => provider.nextStep(pageController),
+                ),
               ),
             ],
           ),
@@ -164,7 +193,7 @@ class _OccasionTile extends StatelessWidget {
           decoration: BoxDecoration(
             color: selected
                 ? AppColors.accentRoseSoft
-                : const Color(0xFFF8F3EF).withValues(alpha: 0.94),
+                : Color.fromARGB(255, 246, 235, 228),
             borderRadius: BorderRadius.circular(24.r),
             border: Border.all(
               color: selected
